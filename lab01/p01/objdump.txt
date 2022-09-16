@@ -1,0 +1,76 @@
+
+main.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <main>:
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+   0:	f3 0f 1e fa          	endbr64 
+   4:	55                   	push   %rbp
+   5:	48 89 e5             	mov    %rsp,%rbp
+#ifdef AUCA_DEBUG 
+   8:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # f <main+0xf>
+   f:	48 89 c6             	mov    %rax,%rsi
+  12:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 19 <main+0x19>
+  19:	48 89 c7             	mov    %rax,%rdi
+  1c:	e8 00 00 00 00       	call   21 <main+0x21>
+  21:	be e7 13 03 00       	mov    $0x313e7,%esi
+  26:	48 89 c7             	mov    %rax,%rdi
+  29:	e8 00 00 00 00       	call   2e <main+0x2e>
+  2e:	48 89 c2             	mov    %rax,%rdx
+  31:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 38 <main+0x38>
+  38:	48 89 c6             	mov    %rax,%rsi
+  3b:	48 89 d7             	mov    %rdx,%rdi
+  3e:	e8 00 00 00 00       	call   43 <main+0x43>
+    cout << "author Shostak" << "\n";
+  43:	b8 00 00 00 00       	mov    $0x0,%eax
+#endif
+  48:	5d                   	pop    %rbp
+  49:	c3                   	ret    
+
+000000000000004a <_Z41__static_initialization_and_destruction_0ii>:
+  4a:	f3 0f 1e fa          	endbr64 
+  4e:	55                   	push   %rbp
+  4f:	48 89 e5             	mov    %rsp,%rbp
+  52:	48 83 ec 10          	sub    $0x10,%rsp
+  56:	89 7d fc             	mov    %edi,-0x4(%rbp)
+  59:	89 75 f8             	mov    %esi,-0x8(%rbp)
+  5c:	83 7d fc 01          	cmpl   $0x1,-0x4(%rbp)
+  60:	75 3b                	jne    9d <_Z41__static_initialization_and_destruction_0ii+0x53>
+  62:	81 7d f8 ff ff 00 00 	cmpl   $0xffff,-0x8(%rbp)
+  69:	75 32                	jne    9d <_Z41__static_initialization_and_destruction_0ii+0x53>
+  extern wostream wclog;	/// Linked to standard error (buffered)
+#endif
+  ///@}
+
+  // For construction of filebuffers for cout, cin, cerr, clog et. al.
+  static ios_base::Init __ioinit;
+  6b:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 72 <_Z41__static_initialization_and_destruction_0ii+0x28>
+  72:	48 89 c7             	mov    %rax,%rdi
+  75:	e8 00 00 00 00       	call   7a <_Z41__static_initialization_and_destruction_0ii+0x30>
+  7a:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 81 <_Z41__static_initialization_and_destruction_0ii+0x37>
+  81:	48 89 c2             	mov    %rax,%rdx
+  84:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 8b <_Z41__static_initialization_and_destruction_0ii+0x41>
+  8b:	48 89 c6             	mov    %rax,%rsi
+  8e:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 95 <_Z41__static_initialization_and_destruction_0ii+0x4b>
+  95:	48 89 c7             	mov    %rax,%rdi
+  98:	e8 00 00 00 00       	call   9d <_Z41__static_initialization_and_destruction_0ii+0x53>
+  9d:	90                   	nop
+  9e:	c9                   	leave  
+  9f:	c3                   	ret    
+
+00000000000000a0 <_GLOBAL__sub_I_main>:
+  a0:	f3 0f 1e fa          	endbr64 
+  a4:	55                   	push   %rbp
+  a5:	48 89 e5             	mov    %rsp,%rbp
+  a8:	be ff ff 00 00       	mov    $0xffff,%esi
+  ad:	bf 01 00 00 00       	mov    $0x1,%edi
+  b2:	e8 93 ff ff ff       	call   4a <_Z41__static_initialization_and_destruction_0ii>
+  b7:	5d                   	pop    %rbp
+  b8:	c3                   	ret    
