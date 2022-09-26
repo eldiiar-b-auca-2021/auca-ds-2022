@@ -13,6 +13,7 @@ int main()
         string current;
         for (int i = 0; i < (int)s.size(); i++)
         {
+
             switch (s.at(i))
             {
             case 'A':
