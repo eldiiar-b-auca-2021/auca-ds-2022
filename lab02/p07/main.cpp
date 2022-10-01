@@ -8,26 +8,27 @@ using namespace std;
 int main()
 {
     iostream::sync_with_stdio(false);
-    bool doCicle = true;
-    while (doCicle)
+    for (int a, b; cin >> a >> b && a != -1 && b != -1;)
     {
-        int a = 0;
-        int b = 0;
-        cin >> a;
-        cin >> b;
-        if (a == -1 && b == -1)
+        int firstRes = 0;
+        int secondRes = 0;
+        if (a > b)
         {
-            doCicle = false;
+            firstRes = a - b;
+            secondRes = 100 - firstRes;
         }
-        int result = abs(a - b);
-        if ()
-            if (result1 > result2)
-            {
-                cout << result1 << endl;
-            }
-            else
-            {
-                cout << result2 << endl;
-            }
+        else if (a < b)
+        {
+            firstRes = b - a;
+            secondRes = 100 - firstRes;
+        }
+        if (firstRes < secondRes)
+        {
+            cout << firstRes << "\n";
+        }
+        else
+        {
+            cout << secondRes << "\n";
+        }
     }
 }
