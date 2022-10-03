@@ -29,7 +29,14 @@ int main()
         }
         for (int i = 0; i < sz(v); i++)
         {
-            cout << v[i] << " ";
+            if (i + 1 == sz(v))
+            {
+                cout << v[i];
+            }
+            else
+            {
+                cout << v[i] << " ";
+            }
         }
         cout << endl;
     }
