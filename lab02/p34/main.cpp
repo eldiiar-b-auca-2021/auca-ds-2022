@@ -38,6 +38,7 @@ int main()
             {
                 count++;
             }
+
             a++;
         }
         cout << count << endl;
