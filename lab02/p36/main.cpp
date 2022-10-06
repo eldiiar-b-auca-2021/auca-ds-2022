@@ -12,6 +12,7 @@ int main()
     iostream::sync_with_stdio(false);
     int num;
     cin >> num;
+    int cases = 1;
     while (num--)
     {
         string line;
@@ -19,6 +20,7 @@ int main()
         istringstream st(line);
         char symbol;
         int val;
+        cout << "Case " << cases++ << ": ";
         while (st >> symbol >> val)
         {
             for (int i = 0; i < val; i++)
