@@ -8,41 +8,48 @@ using namespace std;
 int main()
 {
     iostream::sync_with_stdio(false);
-    int a;
-    int b;
-    cin >> a;
-    cin >> b;
+
     char ch[120][120];
 
-    for (int i = 0; i < a; i++)
+    for (int a, b; cin >> a >> b;)
     {
-        for (int j = 0; j < b; j++)
+        for (int i = 0; i < a; i++)
         {
-            char temp;
-            cin >> temp;
-            if (temp != '\\' && temp != '/')
+            for (int j = 0; j < b; j++)
             {
-            }
-            ch[i][j] = temp;
-        }
-    }
-
-    int slash = 0;
-    for (int i = 0; i < a; i++)
-    {
-        bool isInSquare = false;
-        for (int j = 0; j < b; j++)
-        {
-            if (ch[i][j] == '\\' || ch[i][j] == '/')
-            {
-                slash++;
-                isInSquare = true;
-            }
-            else if (isInSquare)
-            {
-                slash += 2;
+                char temp;
+                cin >> temp;
+                ch[i][j] = temp;
             }
         }
+        int dot = 0;
+        int slash = 0;
+        for (int i = 0; i < a; i++)
+        {
+            bool isDot = false;
+            int howManyTimes = 0;
+            for (int j = 0; j < b; j++)
+            {
+                if (ch[i][j] == '\\' || ch[i][j] == '/')
+                {
+                    slash++;
+                    howManyTimes++;
+                    if (howManyTimes == 1)
+                    {
+                        isDot = true;
+                    }
+                    else if (howManyTimes > 1)
+                    {
+                        isDot = false;
+                        howManyTimes = 0;
+                    }
+                }
+                else if (isDot && ch[i][j] == '.')
+                {
+                    dot++;
+                }
+            }
+        }
+        cout << (slash / 2) + dot << endl;
     }
-    cout << (slash / 2) << endl;
 }
