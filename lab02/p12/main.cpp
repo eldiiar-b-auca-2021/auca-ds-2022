@@ -4,27 +4,34 @@ template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
-
+void computeDigits(int n, int &sum, int &count)
+{
+    sum = 0;
+    count = 0;
+    do
+    {
+        sum += n % 10;
+        n /= 10;
+        count++;
+    } while (n);
+}
+int solve(int &n)
+{
+    int numOfDigits;
+    int sumOfDigits;
+    do
+    {
+        computeDigits(n, sumOfDigits, numOfDigits);
+        n = sumOfDigits;
+    } while (numOfDigits != 1);
+    return n;
+}
 int main()
 {
     iostream::sync_with_stdio(false);
-    long long n;
-    while (cin >> n && n != 0)
+
+    for (int n; cin >> n && n != 0;)
     {
-        if (n == 0)
-        {
-            break;
-        }
-        while (n > 9)
-        {
-            long long temp = 0;
-            while (n)
-            {
-                temp += n % 10;
-                n /= 10;
-            }
-            n = temp;
-        }
-        cout << n << endl;
+        cout << solve(n) << endl;
     }
 }
