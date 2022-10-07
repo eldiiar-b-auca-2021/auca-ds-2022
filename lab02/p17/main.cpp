@@ -12,30 +12,37 @@ int main()
     int b;
     cin >> a;
     cin >> b;
-    string str;
-    int dot = 1;
-    int slash = 0;
-    bool isSlash = false;
-    for (int i = 0; i < b; i++)
+    char ch[120][120];
+
+    for (int i = 0; i < a; i++)
     {
-        getline(cin, str);
-        for (int j = 0; j < sz(str); j++)
+        for (int j = 0; j < b; j++)
         {
-            if (str.at(j) == '\\')
+            char temp;
+            cin >> temp;
+            if (temp != '\\' && temp != '/')
+            {
+            }
+            ch[i][j] = temp;
+        }
+    }
+
+    int slash = 0;
+    for (int i = 0; i < a; i++)
+    {
+        bool isInSquare = false;
+        for (int j = 0; j < b; j++)
+        {
+            if (ch[i][j] == '\\' || ch[i][j] == '/')
             {
                 slash++;
-                isSlash = true;
+                isInSquare = true;
             }
-            else if (str.at(j) == '/')
+            else if (isInSquare)
             {
-                slash++;
-                isSlash = false;
-            }
-            if (isSlash && str.at(j) == '.')
-            {
-                dot++;
+                slash += 2;
             }
         }
     }
-    cout << (slash / 2) + dot << endl;
+    cout << (slash / 2) << endl;
 }
