@@ -8,51 +8,59 @@ using namespace std;
 int main()
 {
     iostream::sync_with_stdio(false);
-    int ended = 0;
-    int testcase;
-    cin >> testcase;
-    vector<string> list;
-    string n;
-    for (int i = 0; i < testcase; i++)
+    vector<string> song = {
+        "Happy",
+        "birthday",
+        "to",
+        "you",
+        "Happy",
+        "birthday",
+        "to",
+        "you",
+        "Happy",
+        "birthday",
+        "to",
+        "Rujia",
+        "Happy",
+        "birthday",
+        "to",
+        "you",
+    };
+    int n;
+    cin >> n;
+    vector<string> v(n);
+    for (int i = 0; i < n; i++)
     {
-        cin >> n;
-        list.push_back(n);
+        cin >> v[i];
     }
-    list.push_back(" ");
-    vector<string> congrat = {
-        "Happy", "birthday", "to", "you",
-        "Happy", "birthday", "to", "you",
-        "Happy", "birthday", "to", "Rujia",
-        "Happy", "birthday", "to", "you"};
-    int index = 0;
-    if ((int)list.size() < (int)congrat.size() || (int)list.size() == (int)congrat.size())
+    if (n <= 16)
     {
-        for (int i = 0; i < (int)congrat.size(); i++)
+        int j = 0;
+        for (int i = 0; i < 16; i++)
         {
-            cout << list.at(index) << ": " << congrat.at(i) << endl;
-            if (index == testcase - 1)
+            if (j == n)
             {
-                index = 0;
-                continue;
+                j = 0;
             }
-            index++;
+            cout << v[j++] << ": " << song[i] << "\n";
         }
     }
-    else
+    else if (n > 16)
     {
-        for (int i = 0; i < (int)congrat.size(); i++)
+        int j = 0;
+        for (int i = 0; i < n; i++)
         {
-            cout << list.at(index) << ": " << congrat.at(i) << endl;
-            if (index == testcase - 1)
+            if (j == 16)
             {
-                ended = 1;
-                index = 0;
-                continue;
+                j = 0;
             }
-            index++;
-            if (ended != 1 && i == (int)congrat.size() - 1)
+            cout << v[i] << ": " << song[j++] << "\n";
+        }
+        if (j != 16)
+        {
+            for (int i = j, k = 0; i < 16; i++, k++)
             {
-                i = -1;
+                cout << v[k] << ": " << song[i] << "\n";
             }
         }
     }
