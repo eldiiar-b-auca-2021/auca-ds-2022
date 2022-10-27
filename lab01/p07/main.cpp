@@ -95,3 +95,44 @@ TEST_CASE("erase(index, length)")
     str.erase(3, 3);
     REQUIRE(str == "str");
 }
+TEST_CASE("move constructor")
+{
+    string str = "string";
+    string *anStr = &str;
+    REQUIRE(str == *anStr);
+}
+TEST_CASE("constructor string(beg, end)")
+{
+    string str = "string";
+    str.erase(str.begin(), str.end());
+    REQUIRE(str == "");
+}
+TEST_CASE("std::reverse algorithm with std::string")
+{
+    string str = "string";
+    reverse(str.begin(), str.end());
+    REQUIRE(str == "gnirts");
+}
+TEST_CASE("std::sort algorithm with std::string")
+{
+    string str = "string";
+    sort(str.begin(), str.end());
+    REQUIRE(str == "ginrst");
+}
+TEST_CASE("std::max_element algorithm with std::string")
+{
+    string str = "string";
+    sort(str.begin(), str.end());
+    REQUIRE(*max_element(str.begin(), str.end()) == 't');
+}
+TEST_CASE("std::min_element algorithm with std::string")
+{
+    string str = "string";
+    sort(str.begin(), str.end());
+    REQUIRE(*min_element(str.begin(), str.end()) == 'g');
+}
+TEST_CASE("subscript operator")
+{
+    string str = "string";
+    REQUIRE(str[0] == 's');
+}
