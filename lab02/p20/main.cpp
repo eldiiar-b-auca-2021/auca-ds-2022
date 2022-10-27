@@ -8,11 +8,15 @@ using namespace std;
 int main()
 {
     iostream::sync_with_stdio(false);
-    // while (EOF)
-    // {
+
+    int count = 0;
     for (int n; cin >> n;)
     {
-
+        if (count != 0)
+        {
+            cout << "\n";
+        }
+        count++;
         vector<string> v(n);
         vector<int> people(n, 0);
         vector<int> peopleThatGet(n, 0);
@@ -57,6 +61,5 @@ int main()
         {
             cout << v[i] << " " << peopleThatGet[i] - people[i] << endl;
         }
-        cout << endl;
     }
 }
