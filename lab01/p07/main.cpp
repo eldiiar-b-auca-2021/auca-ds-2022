@@ -132,7 +132,22 @@ TEST_CASE("std::min_element algorithm with std::string")
     REQUIRE(*min_element(str.begin(), str.end()) == 'g');
 }
 TEST_CASE("subscript operator")
+
 {
     string str = "string";
     REQUIRE(str[0] == 's');
+}
+TEST_CASE("std::string::iterator, operators: *it, it->field , ++it, --it, it += n, it-=n, it2 – it1;")
+{
+    string s = "list";
+    string::iterator it = s.begin();
+    REQUIRE(*it == 'l');
+    it++;
+    REQUIRE(*it == 'i');
+    it--;
+    REQUIRE(*it == 'l');
+    it += 3;
+    REQUIRE(*it == 't');
+    it -= 2;
+    REQUIRE(*it == 'i');
 }
