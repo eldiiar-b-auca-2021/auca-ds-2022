@@ -29,7 +29,7 @@ int main()
             }
         }
 
-        if (m == f)
+        if (m == f && str.size() > 3)
         {
             cout << "LOOP\n";
         }
