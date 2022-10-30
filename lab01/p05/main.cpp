@@ -5,9 +5,9 @@ using namespace std;
 template <class T>
 void auSwap(T &a, T &b)
 {
-    T t = a; // steal adress
-    a = b;   // steal adress
-    b = t;   //  steal adress
+    T t = move(a); // steal adress
+    a = move(b);   // steal adress
+    b = move(t);   //  steal adress
 }
 // pass by value
 void badSwap(int a, int b)
