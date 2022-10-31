@@ -4,20 +4,18 @@ template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
 
 using namespace std;
-bool isNotRepeated(int a)
+bool isRepeated(int num)
 {
-    vector<int> nums(10);
-
-    while (a != 0)
+    vector<int> v(10);
+    while (num)
     {
-        int mod = 0;
-        mod = a % 10;
-        nums[mod]++;
-        a = a / 10;
+        int mod = num % 10;
+        v[mod]++;
+        num /= 10;
     }
-    for (int i = 0; i < sz(nums); i++)
+    for (int i = 0; i < sz(v); i++)
     {
-        if (nums[i] > 1)
+        if (v[i] > 1)
         {
             return false;
         }
@@ -26,20 +24,19 @@ bool isNotRepeated(int a)
 }
 int main()
 {
+
     iostream::sync_with_stdio(false);
 
     int a, b;
-    while (cin >> a >> b)
+    for (; cin >> a >> b;)
     {
         int count = 0;
-        while (a <= b)
+        for (int i = a; i <= b; i++)
         {
-            if (isNotRepeated(a))
+            if (isRepeated(i))
             {
                 count++;
             }
-
-            a++;
         }
         cout << count << endl;
     }
