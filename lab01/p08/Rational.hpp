@@ -67,9 +67,8 @@ std::istream &operator>>(std::istream &inp, Rational<T> &r)
     {
         return inp;
     }
-
     char ch;
-    if (!inp.get(ch))
+    if (!(inp.get(ch)))
     {
         return inp;
     }
@@ -79,11 +78,11 @@ std::istream &operator>>(std::istream &inp, Rational<T> &r)
         inp.setstate(std::ios_base::failbit);
         return inp;
     }
-    if (!inp.get(ch))
+    if (!(inp.get(ch)))
     {
         return inp;
     }
-    if (ch == '+' || ch == '-')
+    if (ch == '+' || ch == '-' || isdigit(ch))
     {
         inp.putback(ch);
     }
@@ -93,12 +92,8 @@ std::istream &operator>>(std::istream &inp, Rational<T> &r)
         inp.setstate(std::ios_base::failbit);
         return inp;
     }
-
     T den;
-    if (!(inp >> den))
-    {
-        return inp;
-    }
+    inp >> den;
     r = Rational<T>(num, den);
     return inp;
 }
@@ -134,6 +129,7 @@ Rational<T> operator/(const Rational<T> &a, const Rational<T> &b)
     }
     T num = a.num() * b.den();
     T den = a.den() * b.num();
+    return Rational<T>(num, den);
 }
 template <typename T>
 bool operator==(const Rational<T> &a, const Rational<T> &b)
@@ -150,7 +146,7 @@ bool operator>(const Rational<T> &a, const Rational<T> &b)
 {
     return a.num() * b.den() > a.den() * b.num();
 }
-template <typenmae T>
+template <typename T>
 bool operator<(const Rational<T> &a, const Rational<T> &b)
 {
     return a.num() * b.den() < a.den() * b.num();
@@ -164,4 +160,20 @@ template <typename T>
 bool operator>=(const Rational<T> &a, const Rational<T> &b)
 {
     return !(b > a);
+}
+template <typename T, typename INT>
+Rational<T> operator+(const Rational<T> &r, const INT &integer)
+{
+    Rational<T> other(integer);
+    T num = r.num() * other.den() + r.den() * other.num();
+    T den = r.den() * other.den();
+    return Rational<T>(num, den);
+}
+template <typename IntValue, typename T>
+Rational<T> operator+(const IntValue &integer, const Rational<T> &r)
+{
+    Rational<T> other(integer);
+    T num = r.num() * other.den() + r.den() * other.num();
+    T den = r.den() * other.den();
+    return Rational<int>(num, den);
 }
