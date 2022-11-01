@@ -76,7 +76,6 @@ void move(int x, int y, vector<vector<int>> &puzzle, string command)
     if (isPossible)
     {
         cout << "This puzzle has no final configuration." << endl;
-        cout << endl;
     }
     else
     {
@@ -84,11 +83,17 @@ void move(int x, int y, vector<vector<int>> &puzzle, string command)
         {
             for (int j = 0; j < 5; j++)
             {
-                cout << (char)puzzle[i][j] << " ";
+                if (j != 4)
+                {
+                    cout << (char)puzzle[i][j] << " ";
+                }
+                else
+                {
+                    cout << (char)puzzle[i][j];
+                }
             }
             cout << endl;
         }
-        cout << endl;
     }
 }
 int main()
@@ -97,7 +102,10 @@ int main()
     int numOfPuzzle = 1;
     for (string s; getline(cin, s) && s != "Z";)
     {
-
+        if (numOfPuzzle != 1)
+        {
+            cout << endl;
+        }
         vector<vector<int>> puzzle(5, vector<int>(5, 0));
         for (int i = 0; i < 5; i++)
         {
