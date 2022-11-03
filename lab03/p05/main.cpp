@@ -2,80 +2,106 @@
 
 template <typename C>
 int sz(const C &c) { return static_cast<int>(c.size()); }
-
 using namespace std;
+class Computer
+{
+    vector<int> m;
+    vector<int> r;
+    int instructionP;
+
+public:
+    Computer()
+        : m(1000, 0), r(10, 0), instructionP(0)
+    {
+    }
+    void read(std::istream &inp)
+    {
+        int index = 0;
+        char temp;
+        for (string i; getline(inp, i) && !i.empty();)
+        {
+
+            m[index] = stoi(i);
+            index++;
+        }
+    }
+    void print()
+    {
+        for (int i = 0; i < sz(m); i++)
+        {
+            cout << m[i] << " ";
+        }
+    }
+
+    int run()
+    {
+        int count = 1;
+        int index = 0;
+        while ((m[index] / 100) != 1)
+        {
+            int d;
+            int n;
+            int temp;
+            temp = (m[index] % 10);
+            n = temp;
+            temp /= 10;
+            d = temp % 10;
+            temp /= 10;
+
+            switch (temp)
+            {
+            case 2:
+                r[d] = n;
+                break;
+            case 3:
+                r[d] += n;
+                r[d] %= 1000;
+                break;
+            case 4:
+                r[d] *= n;
+                r[d] %= 1000;
+                break;
+            case 5:
+                r[d] = r[n];
+                break;
+            case 6:
+                r[d] += r[n];
+                r[d] %= 1000;
+                break;
+            case 7:
+                r[d] *= r[n];
+                r[d] %= 1000;
+                break;
+            case 8:
+                r[d] = m[r[n]];
+                break;
+            case 9:
+                m[r[n]] = r[d];
+                break;
+            case 0:
+                if (r[n] != 0)
+                {
+                    index = r[d];
+                }
+                break;
+            }
+            count++;
+            index++;
+        }
+        return count;
+    }
+};
 
 int main()
 {
     iostream::sync_with_stdio(false);
-    int nu;
-    cin >> nu;
-    vector<int> reg(10, 0);
-    vector<int> mem;
-    for (int i = 0; i < nu; i++)
+    int n;
+    cin >> n >> ws;
+    for (int i = 0; i < n; i++)
     {
-        for (int s; cin >> s;)
-        {
-            mem.push_back(s);
-        }
+        Computer c;
+        c.read(cin);
+        c.print();
+        cout << c.run() << endl;
     }
-    int i = 0;
-    int count = 0;
-    while (1)
-    {
-        int d, n;
-        int temp = 2;
-        int r = mem[i];
-        n = r % 10;
-        count++;
-        int isBreak = r / 100;
-        if (isBreak == 1)
-        {
-            break;
-        }
-        while (temp--)
-        {
-            d = r % 10;
-            r /= 10;
-        }
-        i++;
-
-        switch (isBreak)
-        {
-        case 2:
-            reg[d] = n;
-            break;
-        case 3:
-            reg[d] += n;
-            reg[d] %= 1000;
-            break;
-        case 4:
-            reg[d] *= n;
-            reg[d] %= 1000;
-            break;
-        case 5:
-            reg[d] = reg[n];
-            reg[d] %= 1000;
-            break;
-        case 6:
-            reg[d] += reg[n];
-            reg[d] %= 1000;
-            break;
-        case 7:
-            reg[d] *= reg[n];
-            reg[d] %= 1000;
-            break;
-        case 8:
-            reg[d] = mem[reg[n]];
-            break;
-        case 9:
-            mem[reg[n]] = reg[d];
-            break;
-        case 0:
-            if (reg[n] != 0)
-                i = reg[d];
-            break;
-        }
-    }
-    cout << count << endl;
 }
