@@ -66,7 +66,7 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     }
     return out;
 }
-BigInt operator+(const BigInt &n1, const BigInt &n2)
+inline BigInt operator+(const BigInt &n1, const BigInt &n2)
 {
     std::vector<int> res;
     std::vector<int> numToRem;
@@ -74,17 +74,36 @@ BigInt operator+(const BigInt &n1, const BigInt &n2)
     int j = n2.getMDigits().size() - 1;
     while (i >= 0 && j >= 0)
     {
+        bool isAdded = true;
         int sum = (n1.getMDigits().at(i) + n2.getMDigits().at(j)) % 10;
         if (numToRem.size() != 0)
         {
-            res.push_back((sum + numToRem[0]) % 10);
-            numToRem.clear();
+            if (i == 0 && j == 0)
+            {
+                res.push_back(((n1.getMDigits().at(i) + n2.getMDigits().at(j)) + numToRem[0]));
+                numToRem.clear();
+            }
+            else if (((sum + numToRem[0]) / 10) != 0)
+            {
+                res.push_back((sum + numToRem[0]) % 10);
+                numToRem.push_back((sum + numToRem[0]) / 10);
+                numToRem.erase(numToRem.begin());
+                isAdded = false;
+            }
+            else
+            {
+                res.push_back((sum + numToRem[0]) % 10);
+                numToRem.clear();
+            }
         }
         else
         {
             res.push_back(sum);
         }
-        numToRem.push_back((n1.getMDigits().at(i) + n2.getMDigits().at(j)) / 10);
+        if (isAdded)
+        {
+            numToRem.push_back((n1.getMDigits().at(i) + n2.getMDigits().at(j)) / 10);
+        }
         i--;
         j--;
     }
@@ -114,7 +133,6 @@ BigInt operator+(const BigInt &n1, const BigInt &n2)
         }
         j--;
     }
-
     reverse(res.begin(), res.end());
     std::ostringstream s;
     for (int k = 0; k < (int)res.size(); k++)
@@ -123,6 +141,7 @@ BigInt operator+(const BigInt &n1, const BigInt &n2)
     }
     return BigInt(s.str());
 }
+
 // inline BigInt operator==(const BigInt &n1, const BigInt &n2)
 // {
 

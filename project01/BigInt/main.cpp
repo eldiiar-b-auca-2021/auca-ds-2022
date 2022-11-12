@@ -65,13 +65,37 @@ TEST_CASE("addition")
         sout << x3;
         REQUIRE(sout.str() == "34");
     }
-    SUBCASE("1234 + 1234")
+    SUBCASE("12345678 + 23")
     {
-        BigInt x1("1234234");
-        BigInt x2("123");
+        BigInt x1("12345678");
+        BigInt x2("23");
         BigInt x3 = x1 + x2;
         sout << x3;
-        REQUIRE(sout.str() == "1234357");
+        REQUIRE(sout.str() == "12345701");
+    }
+    SUBCASE("23 + 12345678")
+    {
+        BigInt x1("23");
+        BigInt x2("12345678");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "12345701");
+    }
+    SUBCASE("1234567890 + 987654321")
+    {
+        BigInt x1("123456789");
+        BigInt x2("987654321");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "1111111110");
+    }
+    SUBCASE("9999 + 8888")
+    {
+        BigInt x1("9999");
+        BigInt x2("8888");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "18887");
     }
 }
 // TEST_CASE("comparisons")
