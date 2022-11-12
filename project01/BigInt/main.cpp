@@ -11,9 +11,72 @@ TEST_CASE("default constructor")
     ostringstream sout;
     sout << x;
     REQUIRE(sout.str() == "0");
+
+    vector<BigInt> v(5);
+    ostringstream sout2;
+    for (const auto &i : v)
+    {
+        sout2 << i;
+    }
+    REQUIRE(sout2.str() == "00000");
 }
-TEST_CASE("Non-digit value")
+TEST_CASE("Constructor with a string")
 {
-    REQUIRE_THROWS_AS(BigInt("123vc"), runtime_error);
-    REQUIRE_THROWS_AS(BigInt("  "), runtime_error);
+    ostringstream sout;
+    SUBCASE("positive number")
+    {
+        BigInt x("12344");
+        sout << x;
+        REQUIRE(sout.str() == "12344");
+    }
+    SUBCASE("negative number")
+    {
+        BigInt x("-1234");
+        sout << x;
+        REQUIRE(sout.str() == "-1234");
+    }
+    SUBCASE("empty")
+    {
+        REQUIRE_THROWS_AS(BigInt("  "), runtime_error);
+        REQUIRE_THROWS_AS(BigInt(""), runtime_error);
+    }
+    SUBCASE("invalid number within a string")
+    {
+        REQUIRE_THROWS_AS(BigInt("123-99"), runtime_error);
+        REQUIRE_THROWS_AS(BigInt("123yzs2923"), runtime_error);
+        REQUIRE_THROWS_AS(BigInt("123 123"), runtime_error);
+        REQUIRE_THROWS_AS(BigInt("  -123"), runtime_error);
+    }
+    SUBCASE("+123")
+    {
+        BigInt x("+123");
+        sout << x;
+        REQUIRE(sout.str() == "123");
+    }
 }
+TEST_CASE("addition")
+{
+    ostringstream sout;
+    SUBCASE("12+23")
+    {
+        BigInt x1("12");
+        BigInt x2("22");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "34");
+    }
+    SUBCASE("1234 + 1234")
+    {
+        BigInt x1("1234234");
+        BigInt x2("123");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "1234357");
+    }
+}
+// TEST_CASE("comparisons")
+// {
+//     BigInt x1("1234");
+//     BigInt x2("12345");
+//     REQUIRE()
+// }
