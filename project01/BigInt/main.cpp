@@ -53,6 +53,10 @@ TEST_CASE("Constructor with a string")
         sout << x;
         REQUIRE(sout.str() == "123");
     }
+    SUBCASE("00023")
+    {
+        REQUIRE_THROWS_AS(BigInt("00023"), runtime_error);
+    }
 }
 TEST_CASE("addition")
 {
@@ -91,11 +95,23 @@ TEST_CASE("addition")
     }
     SUBCASE("9999 + 8888")
     {
-        BigInt x1("9999");
-        BigInt x2("8888");
+        BigInt x1("-9999");
+        BigInt x2("-8888");
         BigInt x3 = x1 + x2;
         sout << x3;
-        REQUIRE(sout.str() == "18887");
+        REQUIRE(sout.str() == "-18887");
+    }
+}
+TEST_CASE("Substruction")
+{
+    ostringstream sout;
+    SUBCASE("23-15")
+    {
+        BigInt x1("123");
+        BigInt x2("114");
+        BigInt x3 = x1 - x2;
+        sout << x3;
+        REQUIRE(sout.str() == "9");
     }
 }
 // TEST_CASE("comparisons")
