@@ -16,17 +16,33 @@ int main()
     vector<int> res;
     while (i >= 0 && j >= 0)
     {
-        if (first[i] < second[j])
+        if (j == 0)
         {
-            if (i > 0)
+            for (int k = 0; k <= i - j; k++)
             {
-                first[i - 1]--;
-                temp += "1";
-                temp += to_string(first[i]);
-                cout << stoi(temp) << endl;
-                res.push_back((stoi(temp)) - second[j]);
-                temp = "";
+                temp += std::to_string(first[k]);
             }
+            res.push_back((stoi(temp)) - second[j]);
+            temp = "";
+        }
+        else if (first[i] < second[j])
+        {
+            for (int k = i - 1; k >= 0; k--)
+            {
+                if (first[k] != 0)
+                {
+                    first[k]--;
+                    temp += "1";
+                    break;
+                }
+                else if (first[k] == 0)
+                {
+                    first[k] = 9;
+                }
+            }
+            temp += std::to_string(first[i]);
+            res.push_back((stoi(temp)) - second[j]);
+            temp = "";
         }
         else
         {
@@ -35,8 +51,15 @@ int main()
         i--;
         j--;
     }
+    reverse(res.begin(), res.end());
+
+    while (res[0] == 0)
+    {
+        res.erase(res.begin());
+    }
     for (int k = 0; k < (int)res.size(); k++)
     {
         cout << res[k] << " ";
     }
+    cout << endl;
 }
