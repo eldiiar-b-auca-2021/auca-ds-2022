@@ -42,7 +42,7 @@ TEST_CASE("Constructor with a string")
     }
     SUBCASE("invalid number within a string")
     {
-        REQUIRE_THROWS_AS(BigInt("123-99"), runtime_error);
+        REQUIRE_THROWS_AS(BigInt("1-2399"), runtime_error);
         REQUIRE_THROWS_AS(BigInt("123yzs2923"), runtime_error);
         REQUIRE_THROWS_AS(BigInt("123 123"), runtime_error);
         REQUIRE_THROWS_AS(BigInt("  -123"), runtime_error);
@@ -101,17 +101,62 @@ TEST_CASE("addition")
         sout << x3;
         REQUIRE(sout.str() == "-18887");
     }
+    SUBCASE("934937491283238127838123894821478218378213 + 9392381283146712389728364726318273724628137")
+    {
+        BigInt x1("9392381283146712389728364726318273724628137");
+        BigInt x2("934937491283238127838123894821478218378213");
+        BigInt x3 = x1 + x2;
+        sout << x3;
+        REQUIRE(sout.str() == "10327318774429950517566488621139751943006350");
+    }
 }
 TEST_CASE("Substruction")
 {
     ostringstream sout;
-    SUBCASE("23-15")
+    SUBCASE("123-114")
     {
         BigInt x1("123");
         BigInt x2("114");
         BigInt x3 = x1 - x2;
         sout << x3;
         REQUIRE(sout.str() == "9");
+    }
+    SUBCASE("123-23")
+    {
+        BigInt x1("123");
+        BigInt x2("23");
+        BigInt res = x1 - x2;
+        sout << res;
+        REQUIRE(sout.str() == "100");
+    }
+    SUBCASE("8000-2000")
+    {
+        BigInt x1("8000");
+        BigInt x2("2000");
+        sout << x1 - x2;
+        REQUIRE(sout.str() == "6000");
+    }
+    SUBCASE("90090-3200")
+    {
+        BigInt x1("90090");
+        BigInt x2("3200");
+        sout << x1 - x2;
+        REQUIRE(sout.str() == "86890");
+    }
+    SUBCASE("7209-229")
+    {
+        BigInt x1("7208");
+        BigInt x2("229");
+        sout << x1 - x2;
+        REQUIRE(sout.str() == "6979");
+    }
+    SUBCASE("23-123")
+    {
+        BigInt x1("23");
+        BigInt x2("123");
+        BigInt res = x1 - x2;
+        sout << res;
+        REQUIRE(sout.str() == "-100");
     }
 }
 // TEST_CASE("comparisons")
