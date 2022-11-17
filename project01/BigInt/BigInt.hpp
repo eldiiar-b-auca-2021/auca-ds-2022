@@ -5,12 +5,18 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+using namespace std;
 class BigInt
 {
-
+    friend bool operator==(const BigInt &a, const BigInt &b);
+    friend bool operator<(const BigInt &a, const BigInt &b);
+    friend bool operator>(const BigInt &a, const BigInt &b);
+    friend BigInt operator+(const BigInt &n1, const BigInt &n2);
+    friend BigInt operator-(const BigInt &n1, const BigInt &n2);
+    friend bool operator==(const BigInt &a, const BigInt &b);
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     std::vector<int> mDigits;
-    bool mIsNegative;
+    mutable bool mIsNegative;
 
 public:
     BigInt()
@@ -73,131 +79,113 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     }
     return out;
 }
-inline BigInt operator+(BigInt &n1, BigInt &n2)
+inline BigInt operator+(const BigInt &x, const BigInt &y)
 {
-    std::ostringstream s;
-    if (n1.getIsNegative() && n2.getIsNegative())
+    vector<int> first;
+    vector<int> second;
+    string result;
+
+    if (x.getMDigits().size() > y.getMDigits().size())
     {
-        s << "-";
-    }
-    std::vector<int> res;
-    std::vector<int> first;
-    std::vector<int> second;
-    if (n1.getMDigits().size() > n2.getMDigits().size())
-    {
-        first = n1.getMDigits();
-        second = n2.getMDigits();
+        first = x.getMDigits();
+        second = y.getMDigits();
     }
     else
     {
-        first = n2.getMDigits();
-        second = n1.getMDigits();
+        first = y.getMDigits();
+        second = x.getMDigits();
     }
-    int numToRem = 0;
     int j = second.size() - 1;
-    int numOfSecondV = 0;
-    for (int i = first.size() - 1; i >= 0; i--)
+    int remainder = 0;
+    int valueOfJ = 0;
+    for (int i = (int)first.size() - 1; i >= 0; i--)
     {
         if (j < 0)
         {
-            numOfSecondV = 0;
+            valueOfJ = 0;
         }
         else
         {
-            numOfSecondV = second[j];
+            valueOfJ = second[j];
         }
-        int n = (numOfSecondV + first[i] + numToRem) % 10; // problem fixed with adding numToRem
-        res.push_back(n);
-        numToRem = (numOfSecondV + first[i] + numToRem) / 10;
+        int t = (first[i] + valueOfJ + remainder);
+        result += to_string(t % 10);
+        remainder = t / 10;
         j--;
     }
-    if (numToRem == 1)
+    if (remainder == 1)
     {
-        res.push_back(1);
+        result += to_string(1);
     }
-    reverse(res.begin(), res.end());
-
-    for (int k = 0; k < (int)res.size(); k++)
-    {
-        s << res[k];
-    }
-    return BigInt(s.str());
+    reverse(result.begin(), result.end());
+    return BigInt(result);
 }
-inline BigInt operator-(const BigInt &n1, const BigInt &n2)
+inline BigInt operator-(const BigInt &x, const BigInt &y)
 {
-    std::vector<int> first;
-    std::vector<int> second;
-    std::ostringstream s;
-    int i = 0;
-    int j = 0;
-    bool isFirst = true;
-    if (n1.getMDigits().size() > n2.getMDigits().size())
+    vector<int> first;
+    vector<int> second;
+    string result;
+    int a = 0;
+    int b = 0;
+    bool isFirstLonger = true;
+    if (x.mDigits.size() > y.mDigits.size())
     {
-        i = n1.getMDigits().size() - 1;
-        j = n2.getMDigits().size() - 1;
+        a = x.mDigits.size() - 1;
+        b = y.mDigits.size() - 1;
     }
-    else if (n1.getMDigits().size() < n2.getMDigits().size())
+    else if (x.mDigits.size() < y.mDigits.size())
     {
-        isFirst = false;
-        i = n2.getMDigits().size() - 1;
-        j = n1.getMDigits().size() - 1;
+        isFirstLonger = false;
+        a = y.mDigits.size() - 1;
+        b = x.mDigits.size() - 1;
     }
-    else if (n1.getMDigits().size() == n2.getMDigits().size())
+    else if (x.mDigits.size() == y.mDigits.size())
     {
-        for (int k = 0, l = 0; k < (int)n1.getMDigits().size() && l < (int)n2.getMDigits().size(); k++, l++)
+        for (int i = 0; i < (int)x.mDigits.size(); i++)
         {
-            if (n1.getMDigits()[k] < n2.getMDigits()[l])
+            if (x.mDigits[i] > y.mDigits[i])
             {
-                isFirst = false;
-                i = n2.getMDigits().size() - 1;
-                j = n1.getMDigits().size() - 1;
+                a = x.mDigits.size() - 1;
+                b = y.mDigits.size() - 1;
                 break;
             }
-            else if (n1.getMDigits()[k] > n2.getMDigits()[l])
+            else if (x.mDigits[i] < y.mDigits[i])
             {
-                i = n1.getMDigits().size() - 1;
-                j = n2.getMDigits().size() - 1;
+                isFirstLonger = false;
+                a = y.mDigits.size() - 1;
+                b = x.mDigits.size() - 1;
                 break;
             }
         }
     }
-
-    if (isFirst)
+    if (isFirstLonger)
     {
-        for (int k = 0; k <= i; k++)
+        for (int i = 0; i <= a; i++)
         {
-            first.push_back(n1.getMDigits()[k]);
+            first.push_back(x.mDigits[i]);
         }
-        for (int k = 0; k <= j; k++)
+        for (int i = 0; i <= b; i++)
         {
-            second.push_back(n2.getMDigits()[k]);
+            second.push_back(y.mDigits[i]);
         }
     }
     else
     {
-        s << "-";
-        for (int k = 0; k <= i; k++)
+        for (int i = 0; i <= a; i++)
         {
-            first.push_back(n2.getMDigits()[k]);
+            first.push_back(y.mDigits[i]);
         }
-        for (int k = 0; k <= j; k++)
+        for (int i = 0; i <= b; i++)
         {
-            second.push_back(n1.getMDigits()[k]);
+            second.push_back(x.mDigits[i]);
         }
     }
-
-    std::vector<int> res;
-    std::string temp = "";
-    while (i >= 0 && j >= 0)
+    int j = second.size() - 1;
+    for (int i = (int)first.size() - 1; i >= 0; i--)
     {
-        if (j == 0)
+        if (j < 0)
         {
-            for (int k = 0; k <= i - j; k++)
-            {
-                temp += std::to_string(first[k]);
-            }
-            res.push_back((stoi(temp)) - second[j]);
-            temp = "";
+            result += to_string(first[i]);
         }
         else if (first[i] < second[j])
         {
@@ -206,7 +194,6 @@ inline BigInt operator-(const BigInt &n1, const BigInt &n2)
                 if (first[k] != 0)
                 {
                     first[k]--;
-                    temp += "1";
                     break;
                 }
                 else if (first[k] == 0)
@@ -214,34 +201,23 @@ inline BigInt operator-(const BigInt &n1, const BigInt &n2)
                     first[k] = 9;
                 }
             }
-            temp += std::to_string(first[i]);
-            res.push_back((stoi(temp)) - second[j]);
-            temp = "";
+            result += to_string((first[i] + 10) - second[j]);
         }
         else
         {
-            res.push_back(first[i] - second[j]);
+            result += to_string(first[i] - second[j]);
         }
-        i--;
         j--;
     }
-    reverse(res.begin(), res.end());
-
-    while (res[0] == 0)
+    int size = result.size() - 1;
+    while (result[size--] == '0' && size >= 0)
     {
-        res.erase(res.begin());
+        result.pop_back();
     }
-    if (res.size() == 0)
-    {
-        return BigInt("0");
-    }
-    for (int k = 0; k < (int)res.size(); k++)
-    {
-        s << res[k];
-    }
-    return BigInt(s.str());
+    reverse(result.begin(), result.end());
+    return BigInt(result);
 }
-// inline bool operator==(BigInt &a, BigInt &b)
+// inline bool operator==(const BigInt &a, const BigInt &b)
 // {
 //     if (a > b)
 //     {
@@ -253,26 +229,23 @@ inline BigInt operator-(const BigInt &n1, const BigInt &n2)
 //     }
 //     return true;
 // }
-// inline bool operator<(BigInt &a, BigInt &b)
+// inline bool operator<(const BigInt &a, const BigInt &b)
 // {
-//     if (a.getMDigits().size() < b.getMDigits().size())
+//     if (a > b)
 //     {
-//         return true;
+//         return false;
 //     }
-//     else if (a.getMDigits().size() == b.getMDigits().size())
+//     else if (a > b)
 //     {
-//         for (int i = 0; i < (int)a.getMDigits().size(); i++)
-//         {
-//             if (a.getMDigits()[i] < b.getMDigits()[i])
-//             {
-//                 return true;
-//                 break;
-//             }
-//         }
+//         return false;
 //     }
-//     return false;
+//     else if (a == b)
+//     {
+//         return false;
+//     }
+//     return true;
 // }
-// inline bool operator>(BigInt &a, BigInt &b)
+// inline bool operator>(const BigInt &a, const BigInt &b)
 // {
 //     if (a.getMDigits().size() > b.getMDigits().size())
 //     {
@@ -291,7 +264,196 @@ inline BigInt operator-(const BigInt &n1, const BigInt &n2)
 //     }
 //     return false;
 // }
-// inline BigInt operator==(const BigInt &n1, const BigInt &n2)
+// inline BigInt operator+(const BigInt &n1, const BigInt &n2)
 // {
+//     string res;
+//     vector<int> first;
+//     vector<int> second;
+//     bool isNegative = false;
+//     if (!n1.mIsNegative && n2.mIsNegative) // 12 + (-12)
+//     {
+//         n2.mIsNegative = false;
+//         return n1 - n2;
+//     }
+//     else if (n1.mIsNegative && n2.mIsNegative) // -12 + (-12)
+//     {
+//         isNegative = true;
+//     }
+//     else if (n1.mIsNegative && !n2.mIsNegative) // -12 + 12
+//     {
+//         n1.mIsNegative = false;
+//         return n2 - n1;
+//     }
+//     if (n1.getMDigits().size() > n2.getMDigits().size())
+//     {
+//         first = n1.getMDigits();
+//         second = n2.getMDigits();
+//     }
+//     else
+//     {
+//         first = n2.getMDigits();
+//         second = n1.getMDigits();
+//     }
+//     int numToRem = 0;
+//     int j = second.size() - 1;
+//     int numOfSecondV = 0;
+//     for (int i = first.size() - 1; i >= 0; i--)
+//     {
+//         if (j < 0)
+//         {
+//             numOfSecondV = 0;
+//         }
+//         else
+//         {
+//             numOfSecondV = second[j];
+//         }
+//         int n = (numOfSecondV + first[i] + numToRem) % 10; // problem fixed with adding numToRem
+//         res += to_string(n);
+//         numToRem = (numOfSecondV + first[i] + numToRem) / 10;
+//         j--;
+//     }
+//     if (numToRem == 1)
+//     {
+//         res += to_string(1);
+//     }
+//     reverse(res.begin(), res.end());
+//     if (isNegative && res.size() > 1)
+//     {
+//         res.insert(0, "-");
+//     }
+//     return BigInt(res);
+// }
+// inline BigInt operator-(const BigInt &n1, const BigInt &n2)
+// {
+//     vector<int> first;
+//     vector<int> second;
+//     ostringstream s;
+//     int i;
+//     int j;
+//     bool isFirst = true;
 
+//     if (n1.mIsNegative && !n2.mIsNegative) // (-12) - (12)
+//     {
+//         n2.mIsNegative = true;
+//         return n1 + n2
+//     }
+//     else if (n1.mIsNegative && n2.mIsNegative) // (-12) -(-12)
+//     {
+//         n2.mIsNegative = false; // -12 + 12
+//         return n1 + n2;
+//     }
+//     else if (!n1.mIsNegative && n2.mIsNegative) // 12 - (-12)
+//     {
+//         n2.mIsNegative = false; // 12 + 12
+//         return n1 + n2;
+//     }
+//     if (n1.getMDigits().size() > n2.getMDigits().size())
+//     {
+//         i = n1.getMDigits().size() - 1;
+//         j = n2.getMDigits().size() - 1;
+//     }
+//     else if (n1.getMDigits().size() < n2.getMDigits().size())
+//     {
+//         isFirst = false;
+//         i = n2.getMDigits().size() - 1;
+//         j = n1.getMDigits().size() - 1;
+//     }
+//     else if (n1.getMDigits().size() == n2.getMDigits().size())
+//     {
+//         for (int k = 0, l = 0; k < (int)n1.getMDigits().size() && l < (int)n2.getMDigits().size(); k++, l++)
+//         {
+//             if (n1.getMDigits()[k] < n2.getMDigits()[l])
+//             {
+//                 isFirst = false;
+//                 i = n2.getMDigits().size() - 1;
+//                 j = n1.getMDigits().size() - 1;
+//                 break;
+//             }
+//             else if (n1.getMDigits()[k] > n2.getMDigits()[l])
+//             {
+//                 i = n1.getMDigits().size() - 1;
+//                 j = n2.getMDigits().size() - 1;
+//                 break;
+//             }
+//         }
+//     }
+
+//     if (isFirst)
+//     {
+//         for (int k = 0; k <= i; k++)
+//         {
+//             first.push_back(n1.getMDigits()[k]);
+//         }
+//         for (int k = 0; k <= j; k++)
+//         {
+//             second.push_back(n2.getMDigits()[k]);
+//         }
+//     }
+//     else
+//     {
+//         s << "-";
+//         for (int k = 0; k <= i; k++)
+//         {
+//             first.push_back(n2.getMDigits()[k]);
+//         }
+//         for (int k = 0; k <= j; k++)
+//         {
+//             second.push_back(n1.getMDigits()[k]);
+//         }
+//     }
+
+//     std::vector<int> res;
+//     std::string temp = "";
+//     while (i >= 0 && j >= 0)
+//     {
+//         if (j == 0)
+//         {
+//             for (int k = 0; k <= i - j; k++)
+//             {
+//                 temp += std::to_string(first[k]);
+//             }
+//             res.push_back((stoi(temp)) - second[j]);
+//             temp = "";
+//         }
+//         else if (first[i] < second[j])
+//         {
+//             for (int k = i - 1; k >= 0; k--)
+//             {
+//                 if (first[k] != 0)
+//                 {
+//                     first[k]--;
+//                     temp += "1";
+//                     break;
+//                 }
+//                 else if (first[k] == 0)
+//                 {
+//                     first[k] = 9;
+//                 }
+//             }
+//             temp += std::to_string(first[i]);
+//             res.push_back((stoi(temp)) - second[j]);
+//             temp = "";
+//         }
+//         else
+//         {
+//             res.push_back(first[i] - second[j]);
+//         }
+//         i--;
+//         j--;
+//     }
+//     reverse(res.begin(), res.end());
+//     if (res.size() == 1 && res[0] == 0)
+//     {
+//         return BigInt("0");
+//     }
+//     while (res[0] == 0)
+//     {
+//         res.erase(res.begin());
+//     }
+
+//     for (int k = 0; k < (int)res.size(); k++)
+//     {
+//         s << res[k];
+//     }
+//     return BigInt(s.str());
 // }
