@@ -8,12 +8,12 @@
 using namespace std;
 class BigInt
 {
-    friend bool operator==(const BigInt &a, const BigInt &b);
-    friend bool operator<(const BigInt &a, const BigInt &b);
-    friend bool operator>(const BigInt &a, const BigInt &b);
-    friend BigInt operator+(const BigInt &n1, const BigInt &n2);
-    friend BigInt operator-(const BigInt &n1, const BigInt &n2);
-    friend bool operator==(const BigInt &a, const BigInt &b);
+    friend bool operator==(const BigInt &x, const BigInt &y);
+    friend bool operator<(const BigInt &x, const BigInt &y);
+    friend bool operator>(const BigInt &x, const BigInt &y);
+    friend BigInt operator+(const BigInt &x, const BigInt &y);
+    friend BigInt operator-(const BigInt &x, const BigInt &y);
+    friend bool operator==(const BigInt &x, const BigInt &y);
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
     std::vector<int> mDigits;
     mutable bool mIsNegative;
@@ -250,6 +250,129 @@ inline BigInt operator-(const BigInt &x, const BigInt &y)
         result.insert(0, "-");
     }
     return BigInt(result);
+}
+
+inline bool operator<(const BigInt &x, const BigInt &y)
+{
+    int count = 0;
+    if (!x.mIsNegative && !y.mIsNegative)
+    {
+        if (x.mDigits.size() > y.mDigits.size()) // 12345 > 1234
+        {
+            return false;
+        }
+        else if (x.mDigits.size() == y.mDigits.size()) // 123 < 234
+        {
+            for (int i = 0; i < (int)x.mDigits.size(); i++)
+            {
+                if (x.mDigits[i] > y.mDigits[i]) // 1 > 2
+                {
+                    return false;
+                }
+                else if (x.mDigits[i] == y.mDigits[i])
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    else if (x.mIsNegative && y.mIsNegative)
+    {
+        if (x.mDigits.size() < y.mDigits.size()) // -123 < -1233324
+        {
+            return false;
+        }
+        else if (x.mDigits.size() == y.mDigits.size()) // -12 < -23
+        {
+            for (int i = 0; i < (int)x.mDigits.size(); i++)
+            {
+                if (x.mDigits[i] < y.mDigits[i]) // -1 < -2
+                {
+                    return false;
+                }
+                else if (x.mDigits[i] == y.mDigits[i])
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    else if (!x.mIsNegative && y.mIsNegative)
+    {
+        return false;
+    }
+    else if (count == (int)x.mDigits.size() - 1)
+    {
+        return false;
+    }
+    return true;
+}
+inline bool operator>(const BigInt &x, const BigInt &y)
+{
+    int count = 0;
+    if (!x.mIsNegative && !y.mIsNegative)
+    {
+        if (x.mDigits.size() < y.mDigits.size()) // 12 < 123
+        {
+            return false;
+        }
+        else if (x.mDigits.size() == y.mDigits.size())
+        {
+            for (int i = 0; i < (int)x.mDigits.size(); i++)
+            {
+                if (x.mDigits[i] < y.mDigits[i]) // 123 234
+                {
+                    return false;
+                }
+                else if (x.mDigits[i] == y.mDigits[i])
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    else if (x.mIsNegative && y.mIsNegative)
+    {
+        if (x.mDigits.size() < y.mDigits.size()) // -123 > -2345
+        {
+            return false;
+        }
+        else if (x.mDigits.size() == y.mDigits.size())
+        {
+            for (int i = 0; i < (int)x.mDigits.size(); i++)
+            {
+                if (x.mDigits[i] > y.mDigits[i]) // -223 -134
+                {
+                    return false;
+                }
+                else if (x.mDigits[i] == y.mDigits[i])
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    else if (x.mIsNegative && !y.mIsNegative)
+    {
+        return false;
+    }
+    else if (count == (int)x.mDigits.size() - 1)
+    {
+        return false;
+    }
+    return true;
+}
+inline bool operator==(const BigInt &x, const BigInt &y)
+{
+    if (!(x > y))
+    {
+        return false;
+    }
+    else if (!(x < y))
+    {
+        return false;
+    }
+    return true;
 }
 // inline bool operator==(const BigInt &a, const BigInt &b)
 // {

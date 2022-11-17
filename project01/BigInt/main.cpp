@@ -247,33 +247,48 @@ TEST_CASE("Substruction")
         REQUIRE(sout.str() == "50");
     }
 }
-// TEST_CASE("comparisons")
-// {
-//     SUBCASE("<")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("12345");
-//         REQUIRE(x1 < x2);
-//         BigInt x3("12");
-//         BigInt x4("13");
-//         REQUIRE(x3 < x4);
-//     }
-//     SUBCASE(">")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("12345");
-//         REQUIRE(x2 > x1);
-//         BigInt x3("12");
-//         BigInt x4("13");
-//         REQUIRE(x4 > x3);
-//     }
-//     SUBCASE("==")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("1234");
-//         REQUIRE(x2 == x1);
-//         BigInt x3("12");
-//         BigInt x4("12");
-//         REQUIRE(x4 == x3);
-//     }
-// }
+TEST_CASE("comparisons")
+{
+    SUBCASE("<")
+    {
+        BigInt x1("1234");
+        BigInt x2("12345");
+        REQUIRE(x1 < x2);
+        BigInt x3("12");
+        BigInt x4("13");
+        REQUIRE(x3 < x4);
+        BigInt x5("-123");
+        BigInt x6("-345");
+        REQUIRE(x6 < x5);
+        BigInt x7("-122345");
+        BigInt x8("-234");
+        REQUIRE(x7 < x8);
+        BigInt x9("-122345");
+        BigInt x10("234");
+        REQUIRE(x9 < x10);
+    }
+    SUBCASE(">")
+    {
+        BigInt x1("1234");
+        BigInt x2("12345");
+        REQUIRE(x2 > x1);
+        BigInt x3("12");
+        BigInt x4("13");
+        REQUIRE(x4 > x3);
+        BigInt x5("-1234");
+        BigInt x6("-2345");
+        REQUIRE(x5 > x6);
+        BigInt x7("-123");
+        BigInt x8("12");
+        REQUIRE(x8 > x7);
+    }
+    SUBCASE("==")
+    {
+        BigInt x1("1234");
+        BigInt x2("1234");
+        REQUIRE(x2 == x1);
+        BigInt x3("12");
+        BigInt x4("12");
+        REQUIRE(x4 == x3);
+    }
+}
