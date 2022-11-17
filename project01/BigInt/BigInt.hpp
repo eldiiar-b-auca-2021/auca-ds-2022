@@ -57,14 +57,6 @@ public:
             isFirst = false;
         }
     }
-    const std::vector<int> &getMDigits() const
-    {
-        return mDigits;
-    }
-    const bool &getIsNegative() const
-    {
-        return mIsNegative;
-    }
 };
 inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 {
@@ -73,7 +65,7 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
     {
         out << "-";
     }
-    for (auto digit : x.getMDigits())
+    for (auto digit : x.mDigits)
     {
         out << digit;
     }
@@ -84,16 +76,34 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
     vector<int> first;
     vector<int> second;
     string result;
-
-    if (x.getMDigits().size() > y.getMDigits().size())
+    if (x.mIsNegative && y.mIsNegative) // -23 + (-12)
     {
-        first = x.getMDigits();
-        second = y.getMDigits();
+        x.mIsNegative = false;
+        y.mIsNegative = false;
+        ostringstream s;
+        s << "-";
+        s << x + y;
+        return BigInt(s.str());
+    }
+    else if (x.mIsNegative && !y.mIsNegative) // -12 + 3 // -12 + 100
+    {
+        x.mIsNegative = false;
+        return y - x;
+    }
+    else if (!x.mIsNegative && y.mIsNegative) // 12 + (-35)
+    {
+        y.mIsNegative = false;
+        return x - y;
+    }
+    if (x.mDigits.size() > y.mDigits.size())
+    {
+        first = x.mDigits;
+        second = y.mDigits;
     }
     else
     {
-        first = y.getMDigits();
-        second = x.getMDigits();
+        first = y.mDigits;
+        second = x.mDigits;
     }
     int j = second.size() - 1;
     int remainder = 0;
@@ -122,6 +132,26 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
 }
 inline BigInt operator-(const BigInt &x, const BigInt &y)
 {
+    if (x.mIsNegative && y.mIsNegative) // -50 -(-50)
+    {
+        x.mIsNegative = false;
+        y.mIsNegative = false;
+        return y - x;
+    }
+    else if (!x.mIsNegative && y.mIsNegative) // 50 -(-522)
+    {
+        y.mIsNegative = false;
+        return y + x;
+    }
+    else if (x.mIsNegative && !y.mIsNegative) // -50 - (100)
+    {
+        ostringstream s;
+        x.mIsNegative = false;
+        s << "-";
+        s << x + y;
+        return BigInt(s.str());
+    }
+
     vector<int> first;
     vector<int> second;
     string result;
@@ -215,6 +245,10 @@ inline BigInt operator-(const BigInt &x, const BigInt &y)
         result.pop_back();
     }
     reverse(result.begin(), result.end());
+    if (!isFirstLonger) // 23 - 100 // 100 -23
+    {
+        result.insert(0, "-");
+    }
     return BigInt(result);
 }
 // inline bool operator==(const BigInt &a, const BigInt &b)
