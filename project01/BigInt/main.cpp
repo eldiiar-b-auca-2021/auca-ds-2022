@@ -74,22 +74,22 @@ TEST_CASE("addition")
         sout << x1 + x2;
         REQUIRE(sout.str() == "34");
     }
-    SUBCASE("positive + positive, #2")
-    {
+    // SUBCASE("positive + positive, #2")
+    // {
 
-        for (int i = 0; i < 1000; i++)
-        {
-            for (int j = 0; j < 1000; j++)
-            {
-                BigInt x(to_string(i));
-                BigInt y(to_string(j));
-                BigInt res = x + y;
-                sout << res;
-                REQUIRE(sout.str() == to_string(i + j));
-                sout.str("");
-            }
-        }
-    }
+    //     for (int i = 0; i < 1000; i++)
+    //     {
+    //         for (int j = 0; j < 1000; j++)
+    //         {
+    //             BigInt x(to_string(i));
+    //             BigInt y(to_string(j));
+    //             BigInt res = x + y;
+    //             sout << res;
+    //             REQUIRE(sout.str() == to_string(i + j));
+    //             sout.str("");
+    //         }
+    //     }
+    // }
 
     SUBCASE("positive + positive, #3")
     {
@@ -99,6 +99,15 @@ TEST_CASE("addition")
         sout << x3;
         REQUIRE(sout.str() == "10327318774429950517566488621139751943006350");
     }
+    SUBCASE("negative + negative, #4")
+    {
+
+        BigInt x("-123");
+        BigInt y("-234");
+        sout << x + y;
+        REQUIRE(sout.str() == "-357");
+    }
+
     // SUBCASE("31+(-1)")
     // {
     //     BigInt x1("31");

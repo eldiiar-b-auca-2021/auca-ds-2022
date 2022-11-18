@@ -8,7 +8,7 @@
 using namespace std;
 class BigInt
 {
-    // friend std::ostream &operator>>(, const BigInt &x);
+    friend bool checkBiggestOne(const BigInt &x, const BigInt &y);
     friend BigInt operator*(const BigInt &x, const BigInt &y);
     friend bool operator!=(const BigInt &x, const BigInt &y);
     friend bool operator==(const BigInt &x, const BigInt &y);
@@ -107,6 +107,25 @@ public:
         }
         return z;
     }
+    static BigInt subtractsAbsValues(const BigInt &x, const BigInt &y)
+    {
+        auto itX = x.mDigits.rbegin();
+        auto itY = y.mDigits.rbegin();
+        auto end = x.mDigits.rend();
+        while (itX != end)
+        {
+            if (*itX < *itY)
+            {
+                for (int i = 1; i < x.mDigits.size(); i++)
+                {
+                    if (*(itX + i) != 0)
+                    {
+                        *(itX + i)--;
+                    }
+                }
+            }
+        }
+    }
 };
 
 inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
@@ -139,7 +158,35 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
         return BigInt(res.str());
     }
 }
-
+inline BigInt operator-(const BigInt &x, const BigInt &y)
+{
+    if (!x.mIsNegative && !y.mIsNegative)
+    {
+        if (checkBiggestOne(x, y))
+        {
+            return BigInt::subtractsAbsValues(x, y);
+        }
+        else
+        {
+            return BigInt::subtractsAbsValues(y, x);
+        }
+    }
+}
+inline bool checkBiggestOne(const BigInt &x, const BigInt &y)
+{
+    if (x.mDigits.size() > y.mDigits.size())
+    {
+        return true;
+    }
+    else if (x.mDigits.size() == y.mDigits.size())
+    {
+        if (x > y)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 // inline BigInt operator-(const BigInt &x, const BigInt &y)
 // {
 //     if (x.mIsNegative && y.mIsNegative) // -50 -(-50)
