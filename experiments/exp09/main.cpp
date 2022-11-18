@@ -8,44 +8,26 @@ using namespace std;
 int main()
 {
     iostream::sync_with_stdio(false);
-    vector<int> v1 = {4, 2, 8};
-    vector<int> v2 = {3, 2};
-    vector<int> numToRem;
-    vector<int> res;
-    bool isFirst = true;
-    int i = v1.size() - 1;
-    int j = v2.size() - 1;
-    while (i >= 0 && j >= 0)
+    vector<int> v1 = {5, 9};
+    vector<int> v2 = {5, 6};
+    string res;
+    int a = v1.size() - 1;
+    int b = v2.size() - 1;
+    int numToRem = 0;
+    for (int i = b; i >= 0; i--)
     {
-
-        int sum = ((v1[i] + v2[j]) % 10);
-        if (numToRem.size() != 0)
+        for (int j = a; j >= 0; j--)
         {
-            res.push_back(sum + numToRem[0]);
-            numToRem.clear();
+            int t = v1[j] * v2[i] + numToRem;
+            res += to_string(t % 10);
+            numToRem = t / 10;
         }
-        else
+        if (numToRem != 0)
         {
-            res.push_back(sum);
+            res += to_string(numToRem);
+            numToRem = 0;
         }
-        numToRem.push_back((v1[i] + v2[j]) / 10);
-        i--, j--;
+        cout << res << endl;
+        res = "";
     }
-    while (i >= 0)
-    {
-        if (numToRem.size() != 0)
-        {
-            res.push_back(numToRem[0] + v1[i--]);
-        }
-        else
-        {
-            res.push_back(v1[i--]);
-        }
-    }
-    reverse(res.begin(), res.end());
-    for (int k = 0; k < (int)res.size(); k++)
-    {
-        cout << res[k];
-    }
-    cout << endl;
 }
