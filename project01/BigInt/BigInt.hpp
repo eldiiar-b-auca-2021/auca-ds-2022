@@ -15,10 +15,10 @@ class BigInt
     friend bool operator<(const BigInt &x, const BigInt &y);
     friend bool operator>(const BigInt &x, const BigInt &y);
     friend BigInt operator+(const BigInt &x, const BigInt &y);
-    friend BigInt operator-(const BigInt &x, const BigInt &y);
+    friend BigInt operator-(BigInt &x, BigInt &y);
     friend bool operator==(const BigInt &x, const BigInt &y);
     friend std::ostream &operator<<(std::ostream &out, const BigInt &x);
-
+    friend bool checkBiggestOne(BigInt &x, BigInt &y);
     std::vector<int> mDigits;
     mutable bool mIsNegative;
 
@@ -107,24 +107,53 @@ public:
         }
         return z;
     }
-    static BigInt subtractsAbsValues(const BigInt &x, const BigInt &y)
+    static BigInt subtractsAbsValues(BigInt &x, BigInt &y)
     {
+        int f = 0, s = 0;
         auto itX = x.mDigits.rbegin();
         auto itY = y.mDigits.rbegin();
-        auto end = x.mDigits.rend();
-        while (itX != end)
+        BigInt z;
+        z.mDigits.resize(std::max(x.mDigits.size(), y.mDigits.size()));
+        auto itZ = z.mDigits.rbegin();
+        while (itX != x.mDigits.rend() || itY != y.mDigits.rend())
         {
-            if (*itX < *itY)
+            if (itX != x.mDigits.rend())
             {
-                for (int i = 1; i < x.mDigits.size(); i++)
+                f = *itX;
+                itX++;
+            }
+            if (itY != y.mDigits.rend())
+            {
+                s = *itY;
+                itY++;
+            }
+            if (f < s)
+            {
+                for (auto it = itX; it != x.mDigits.rend(); it++)
                 {
-                    if (*(itX + i) != 0)
+                    if (*it == 0)
+                        *it = 9;
+                    else
                     {
-                        *(itX + i)--;
+                        *it = (*it - 1);
+                        *itZ = f - s + 10;
+                        itZ++;
+                        break;
                     }
                 }
             }
+            else
+            {
+                *itZ = f - s;
+                itZ++;
+            }
+            s = 0, f = 0;
         }
+        if (z.mDigits.size() > 1 && z.mDigits.front() == 0)
+        {
+            z.mDigits.erase(z.mDigits.begin());
+        }
+        return z;
     }
 };
 
@@ -158,35 +187,28 @@ inline BigInt operator+(const BigInt &x, const BigInt &y)
         return BigInt(res.str());
     }
 }
-inline BigInt operator-(const BigInt &x, const BigInt &y)
+inline BigInt operator-(BigInt &x, BigInt &y)
 {
     if (!x.mIsNegative && !y.mIsNegative)
     {
-        if (checkBiggestOne(x, y))
-        {
-            return BigInt::subtractsAbsValues(x, y);
-        }
-        else
-        {
-            return BigInt::subtractsAbsValues(y, x);
-        }
+        return BigInt::subtractsAbsValues(x, y);
     }
 }
-inline bool checkBiggestOne(const BigInt &x, const BigInt &y)
-{
-    if (x.mDigits.size() > y.mDigits.size())
-    {
-        return true;
-    }
-    else if (x.mDigits.size() == y.mDigits.size())
-    {
-        if (x > y)
-        {
-            return true;
-        }
-    }
-    return false;
-}
+// inline bool checkBiggestOne(BigInt &x, BigInt &y)
+// {
+//     if (x.mDigits.size() > y.mDigits.size())
+//     {
+//         return true;
+//     }
+//     else if (x.mDigits.size() == y.mDigits.size())
+//     {
+//         if (x > y)
+//         {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 // inline BigInt operator-(const BigInt &x, const BigInt &y)
 // {
 //     if (x.mIsNegative && y.mIsNegative) // -50 -(-50)
