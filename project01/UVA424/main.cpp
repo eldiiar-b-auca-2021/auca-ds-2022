@@ -1,4 +1,4 @@
-#pragma once
+#include <bits/stdc++.h>
 
 #include <vector>
 #include <iostream>
@@ -8,7 +8,6 @@
 using namespace std;
 class BigInt
 {
-    friend bool checkTheValuesOfEqualSizes(BigInt &x, BigInt &y, int &count);
     friend BigInt operator*(BigInt &x, BigInt &y);
     friend bool operator!=(BigInt &x, BigInt &y);
     friend bool operator==(BigInt &x, BigInt &y);
@@ -359,27 +358,46 @@ inline bool operator>(BigInt &x, BigInt &y)
         }
         else if (x.mDigits.size() == y.mDigits.size())
         {
-            if (checkTheValuesOfEqualSizes(x, y, count))
+            for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                if (*i > *j) // 123 234
+                {
+                    return true;
+                }
+                else if (*i == *j)
+                {
+                    count++;
+                }
+                else if (*i < *j)
+                {
+                    return false;
+                }
             }
         }
     }
     else if (x.mIsNegative && y.mIsNegative)
     {
-        x.mIsNegative = false;
-        y.mIsNegative = false;
-        if (x > y)
+        if (x.mDigits.size() < y.mDigits.size()) // -123 > -2345
         {
             return false;
         }
-        else
+        else if (x.mDigits.size() == y.mDigits.size())
         {
-            return true;
+            for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
+            {
+                if (*i > *j) // 123 234
+                {
+                    return false;
+                }
+                else if (*i == *j)
+                {
+                    count++;
+                }
+                else if (*i < *j)
+                {
+                    return true;
+                }
+            }
         }
     }
     else if (x.mIsNegative && !y.mIsNegative)
@@ -392,22 +410,30 @@ inline bool operator>(BigInt &x, BigInt &y)
     }
     return true;
 }
-inline bool checkTheValuesOfEqualSizes(BigInt &x, BigInt &y, int &count)
+template <typename C>
+int sz(const C &c) { return static_cast<int>(c.size()); }
+
+using namespace std;
+
+int main()
 {
-    for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
+    iostream::sync_with_stdio(false);
+
+    for (int n; cin >> n;)
     {
-        if (*i > *j) // 123 234
+        BigInt x;
+        BigInt y("1");
+        BigInt sum;
+        int nm = n;
+        n--;
+        while (n--)
         {
-            return true;
+            sum = x + y;
+            x = y;
+            y = sum;
         }
-        else if (*i == *j)
-        {
-            count++;
-        }
-        else if (*i < *j)
-        {
-            return false;
-        }
+        ostringstream sout;
+        sout << y;
+        cout << "The Fibonacci number for " << nm << " is " << sout.str() << endl;
     }
-    return true;
 }
