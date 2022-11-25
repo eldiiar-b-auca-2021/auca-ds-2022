@@ -8,7 +8,8 @@
 using namespace std;
 class BigInt
 {
-    friend bool checkTheValuesOfEqualSizes(BigInt &x, BigInt &y, int &count);
+    friend bool checkTheValuesOfEqualSizes1(BigInt &x, BigInt &y, int &count);
+    friend bool checkTheValuesOfEqualSizes2(BigInt &x, BigInt &y, int &count);
     friend BigInt operator*(BigInt &x, BigInt &y);
     friend bool operator!=(BigInt &x, BigInt &y);
     friend bool operator==(BigInt &x, BigInt &y);
@@ -296,53 +297,31 @@ inline bool operator<(BigInt &x, BigInt &y)
         }
         else if (x.mDigits.size() == y.mDigits.size()) // 123 < 234
         {
-            for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
-            {
-                if (*i < *j) // 123 234
-                {
-                    return true;
-                }
-                else if (*i == *j)
-                {
-                    count++;
-                }
-                else if (*i > *j)
-                {
-                    return false;
-                }
-            }
+            if (checkTheValuesOfEqualSizes2(x, y, count))
+                return true;
+            else if (count == (int)y.mDigits.size())
+                return false;
+            else
+                return false;
         }
     }
     else if (x.mIsNegative && y.mIsNegative)
     {
-        if (x.mDigits.size() < y.mDigits.size()) // -123 < -1233324
+        if (x.mDigits.size() > y.mDigits.size()) // 12345 > 1234
         {
-            return false;
+            return true;
         }
-        else if (x.mDigits.size() == y.mDigits.size()) // -12 < -23
+        else if (x.mDigits.size() == y.mDigits.size()) // 123 < 234
         {
-            for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
-            {
-                if (*i < *j) // 123 234
-                {
-                    return false;
-                }
-                else if (*i == *j)
-                {
-                    count++;
-                }
-                else if (*i > *j)
-                {
-                    return true;
-                }
-            }
+            if (checkTheValuesOfEqualSizes2(x, y, count))
+                return false;
+            else if (count == (int)y.mDigits.size())
+                return false;
+            else
+                return false;
         }
     }
     else if (!x.mIsNegative && y.mIsNegative)
-    {
-        return false;
-    }
-    if (count == (int)x.mDigits.size())
     {
         return false;
     }
@@ -354,60 +333,56 @@ inline bool operator>(BigInt &x, BigInt &y)
     if (!x.mIsNegative && !y.mIsNegative)
     {
         if (x.mDigits.size() < y.mDigits.size()) // 12 < 123
-        {
             return false;
-        }
         else if (x.mDigits.size() == y.mDigits.size())
         {
-            if (checkTheValuesOfEqualSizes(x, y, count))
-            {
+            if (checkTheValuesOfEqualSizes1(x, y, count))
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
     }
     else if (x.mIsNegative && y.mIsNegative)
     {
-        x.mIsNegative = false;
-        y.mIsNegative = false;
-        if (x > y)
-        {
+        if (x.mDigits.size() > y.mDigits.size()) // 12 < 123
             return false;
-        }
-        else
+        else if (x.mDigits.size() == y.mDigits.size())
         {
-            return true;
+            if (checkTheValuesOfEqualSizes1(x, y, count))
+                return false;
+            else if (count != (int)y.mDigits.size())
+                return true;
+            else
+                return false;
         }
     }
     else if (x.mIsNegative && !y.mIsNegative)
-    {
         return false;
-    }
-    if (count == (int)x.mDigits.size())
-    {
-        return false;
-    }
     return true;
 }
-inline bool checkTheValuesOfEqualSizes(BigInt &x, BigInt &y, int &count)
+inline bool checkTheValuesOfEqualSizes1(BigInt &x, BigInt &y, int &count)
 {
     for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
     {
-        if (*i > *j) // 123 234
-        {
+        if (*i > *j)
             return true;
-        }
-        else if (*i == *j)
-        {
-            count++;
-        }
         else if (*i < *j)
-        {
             return false;
-        }
+        else if (*i == *j)
+            count++;
     }
-    return true;
+    return false;
+}
+inline bool checkTheValuesOfEqualSizes2(BigInt &x, BigInt &y, int &count)
+{
+    for (auto i = x.mDigits.begin(), j = y.mDigits.begin(); i != x.mDigits.end(); i++, j++)
+    {
+        if (*i < *j)
+            return true;
+        else if (*i > *j)
+            return false;
+        else if (*i == *j)
+            count++;
+    }
+    return false;
 }

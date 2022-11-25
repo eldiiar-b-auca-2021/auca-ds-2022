@@ -101,202 +101,143 @@ TEST_CASE("addition")
     }
     SUBCASE("negative + negative, #4")
     {
-
         BigInt x("-123");
         BigInt y("-234");
         sout << x + y;
         REQUIRE(sout.str() == "-357");
     }
-
-    // SUBCASE("31+(-1)")
-    // {
-    //     BigInt x1("31");
-    //     BigInt x2("-1");
-    //     sout << x1 + x2;
-    //     REQUIRE(sout.str() == "30");
-    // }
+    SUBCASE("positive + negative, #5")
+    {
+        BigInt x("-123");
+        BigInt y("234");
+        sout << x + y;
+        REQUIRE(sout.str() == "111");
+    }
+    SUBCASE("positive + negative, #5")
+    {
+        BigInt x("123");
+        BigInt y("-234");
+        sout << x + y;
+        REQUIRE(sout.str() == "-111");
+    }
 }
 
-// TEST_CASE("Substruction")
-// {
-//     ostringstream sout;
-//     SUBCASE("123-114")
-//     {
-//         BigInt x1("123");
-//         BigInt x2("114");
-//         BigInt x3 = x1 - x2;
-//         sout << x3;
-//         REQUIRE(sout.str() == "9");
-//     }
-//     SUBCASE("123-23")
-//     {
-//         BigInt x1("123");
-//         BigInt x2("23");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "100");
-//     }
-//     SUBCASE("8000-2000")
-//     {
-//         BigInt x1("8000");
-//         BigInt x2("2000");
-//         sout << x1 - x2;
-//         REQUIRE(sout.str() == "6000");
-//     }
-//     SUBCASE("90090-3200")
-//     {
-//         BigInt x1("90090");
-//         BigInt x2("3200");
-//         sout << x1 - x2;
-//         REQUIRE(sout.str() == "86890");
-//     }
-//     SUBCASE("7209-229")
-//     {
-//         BigInt x1("7208");
-//         BigInt x2("229");
-//         sout << x1 - x2;
-//         REQUIRE(sout.str() == "6979");
-//     }
-//     SUBCASE("23-123")
-//     {
-//         BigInt x1("23");
-//         BigInt x2("123");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "-100");
-//     }
-//     SUBCASE("1000-1")
-//     {
-//         BigInt x1("1000");
-//         BigInt x2("1");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "999");
-//     }
-//     SUBCASE("1008-9")
-//     {
-//         BigInt x1("1008");
-//         BigInt x2("9");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "999");
-//     }
-//     SUBCASE("9988117-88722")
-//     {
-//         BigInt x1("9988117");
-//         BigInt x2("88722");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "9899395");
-//     }
-//     SUBCASE("-100-(-50)")
-//     {
-//         BigInt x1("-100");
-//         BigInt x2("-50");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "-50");
-//     }
-//     SUBCASE("-50-(-100)")
-//     {
-//         BigInt x1("-50");
-//         BigInt x2("-100");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "50");
-//     }
-//     SUBCASE("50-100")
-//     {
-//         BigInt x1("50");
-//         BigInt x2("-100");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "150");
-//     }
-//     SUBCASE("50-50")
-//     {
-//         BigInt x1("50");
-//         BigInt x2("50");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "0");
-//     }
-//     SUBCASE("100-(-50)")
-//     {
-//         BigInt x1("100");
-//         BigInt x2("-50");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "150");
-//     }
-//     SUBCASE("-50 - 100")
-//     {
-//         BigInt x1("-50");
-//         BigInt x2("100");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "-150");
-//     }
-//     SUBCASE("-50 - (-100)")
-//     {
-//         BigInt x1("-50");
-//         BigInt x2("-100");
-//         BigInt res = x1 - x2;
-//         sout << res;
-//         REQUIRE(sout.str() == "50");
-//     }
-// }
-// TEST_CASE("comparisons")
-// {
-//     SUBCASE("<")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("12345");
-//         REQUIRE(x1 < x2);
-//         BigInt x3("12");
-//         BigInt x4("13");
-//         REQUIRE(x3 < x4);
-//         BigInt x5("-123");
-//         BigInt x6("-345");
-//         REQUIRE(x6 < x5);
-//         BigInt x7("-122345");
-//         BigInt x8("-234");
-//         REQUIRE(x7 < x8);
-//         BigInt x9("-122345");
-//         BigInt x10("234");
-//         REQUIRE(x9 < x10);
-//     }
-//     SUBCASE(">")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("12345");
-//         REQUIRE(x2 > x1);
-//         BigInt x3("12");
-//         BigInt x4("13");
-//         REQUIRE(x4 > x3);
-//         BigInt x5("-1234");
-//         BigInt x6("-2345");
-//         REQUIRE(x5 > x6);
-//         BigInt x7("-123");
-//         BigInt x8("12");
-//         REQUIRE(x8 > x7);
-//     }
-//     SUBCASE("==")
-//     {
-//         BigInt x1("1234");
-//         BigInt x2("1234");
-//         REQUIRE(x2 == x1);
-//         BigInt x3("-112");
-//         BigInt x4("-112");
-//         REQUIRE(x4 == x3);
-//     }
-//     // SUBCASE("!=")
-//     // {
-//     //     BigInt x1("12347");
-//     //     BigInt x2("1234");
-//     //     REQUIRE(x2 != x1);
-//     //     BigInt x3("-23445");
-//     //     BigInt x4("-34");
-//     //     REQUIRE(x3 != x4);
-//     // }
-// }
+TEST_CASE("subtraction")
+{
+    ostringstream sout;
+    SUBCASE("positive - positive, #1")
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                BigInt x(to_string(i));
+                BigInt y(to_string(j));
+                sout << x - y;
+                REQUIRE(sout.str() == to_string(i - j));
+                sout.str("");
+            }
+        }
+    }
+    SUBCASE("negative - negative, #2")
+    {
+        BigInt x1("-9392381283146712389728364726318273724628137");
+        BigInt x2("-934937491283238127838123894821478218378213");
+        BigInt x3 = x1 - x2;
+        sout << x3;
+        REQUIRE(sout.str() == "-8457443791863474261890240831496795506249924");
+    }
+    SUBCASE("negative - positive, #4")
+    {
+        BigInt x("-123");
+        BigInt y("234");
+        sout << x - y;
+        REQUIRE(sout.str() == "-357");
+    }
+    SUBCASE("positive - positive, #5")
+    {
+        BigInt x("123");
+        BigInt y("234");
+        sout << x - y;
+        REQUIRE(sout.str() == "-111");
+    }
+    SUBCASE("positive - positive, #6")
+    {
+        BigInt x("323");
+        BigInt y("323");
+        sout << x - y;
+        REQUIRE(sout.str() == "0");
+    }
+    SUBCASE("positive - negative, #7")
+    {
+        BigInt x("323");
+        BigInt y("-323");
+        sout << x - y;
+        REQUIRE(sout.str() == "646");
+    }
+}
+TEST_CASE("comparisons")
+{
+    SUBCASE("<")
+    {
+        BigInt x("244");
+        BigInt y("440");
+        REQUIRE(x < y);
+        BigInt x1("1234");
+        BigInt y1("12345");
+        REQUIRE(x1 < y1);
+
+        BigInt x2("12");
+        BigInt y2("13");
+        REQUIRE(x2 < y2);
+
+        BigInt x3("-123");
+        BigInt y3("-345");
+        REQUIRE(x3 > y3);
+    }
+    SUBCASE(">")
+    {
+        BigInt x("244");
+        BigInt y("440");
+        REQUIRE(y > x);
+        BigInt x1("1234");
+        BigInt x2("12345");
+        REQUIRE(x2 > x1);
+        BigInt x3("12");
+        BigInt x4("13");
+        REQUIRE(x4 > x3);
+        BigInt x5("-1234");
+        BigInt x6("-2345");
+        REQUIRE(x5 > x6);
+        BigInt x7("-123");
+        BigInt x8("12");
+        REQUIRE(x8 > x7);
+    }
+    SUBCASE("==")
+    {
+        BigInt x1("1234");
+        BigInt x2("1234");
+        REQUIRE(x2 == x1);
+        BigInt x3("-112");
+        BigInt x4("-112");
+        REQUIRE(x4 == x3);
+    }
+    SUBCASE("!=")
+    {
+        BigInt x1("12347");
+        BigInt x2("1234");
+        REQUIRE(x2 != x1);
+        BigInt x3("-23445");
+        BigInt x4("-34");
+        REQUIRE(x3 != x4);
+    }
+}
+TEST_CASE("input")
+{
+    istringstream i("10002002020");
+    BigInt x;
+    i >> x;
+    ostringstream o;
+    o << x;
+    REQUIRE(o.str() == "10002002020");
+}
