@@ -12,51 +12,128 @@ int main()
     // experiment with iterators
 
     // experiment with usual iterator
-    vector<int> first = {1, 2, 3, 4};
-    vector<int> second = {1, 1, 2, 9};
-    auto itX = first.rbegin();
-    auto itY = second.rbegin();
-    vector<int> res;
-    int s = 0;
-    int f = 0;
-    int s = 0;
-    while (itX != first.rend() || itY != second.rend())
+    BigInt y("2");
+    BigInt x("7");
+    int n = 1, temp = 0, sum = 1;
+    BigInt res(0);
+    string s;
+
+    BigInt count("1");
+    while (true)
     {
-        if (itX != first.end())
+        ostringstream oss;
+        res = count * y;
+        if (res == x)
         {
-            f = *itX;
-            itX++;
+            break;
         }
-        if (itY != second.end())
+        else if (res > x)
         {
-            s = *itY;
-            itY++;
+            sum -= 1;
+            break;
         }
-        if (*itX < *itY)
-        {
-            for (auto it = 1 + itX; it != first.rend(); it++)
-            {
-                if (*it == 0)
-                {
-                    *it = 9;
-                }
-                else
-                {
-                    *it = (*it - 1);
-                    *itX = abs(*itX - *itY);
-                    break;
-                }
-            }
-            s = *itX;
-        }
-        else
-        {
-            s = *itX - *itY;
-        }
-        cout << s << " ";
-        itX++;
-        itY++;
+        sum++;
+        count = count + BigInt(1);
+        res = 0;
     }
+    cout << sum << endl;
+    // for (auto itY = y.mDigits.rbegin(); itY != y.mDigits.rend(); itY++)
+    // {
+    //     count++;
+    //     for (auto itX = x.mDigits.rbegin(); itX != x.mDigits.rend(); itX++)
+    //     {
+    //         sum = *itX * *itY + temp;
+    //         if (sum > 9)
+    //         {
+    //             s += to_string(sum % 10);
+    //             temp = sum / 10;
+    //         }
+    //         else
+    //             s += to_string(sum);
+    //     }
+    //     if (temp != 0)
+    //         s += to_string(temp);
+    //     reverse(s.begin(), s.end());
+    //     for (int i = 1; i < count; i++)
+    //     {
+    //         s += "0";
+    //     }
+    //     while (s[0] == '0' && s.size() > 1)
+    //     {
+    //         s.erase(s.begin());
+    //     }
+    //     cout << s << endl;
+    //     res = res + BigInt(s);
+    //     s = "";
+    //     temp = 0;
+    // }
+    // ostringstream ss;
+    // ss << res;
+    // cout << ss.str() << endl;
+
+    // while (itX != x.mDigits.rend() || itY != y.mDigits.rend())
+    // {
+    //     if (itX != x.mDigits.rend())
+    //     {
+    //         xValue = *itX;
+    //         itX++;
+    //     }
+    //     if (itY != y.mDigits.rend())
+    //     {
+    //         yValue = *itY;
+    //         itY++;
+    //     }
+    //     sum = xValue - yValue + temp;
+    //     if (sum < 0)
+    //     {
+    //         sum += 10;
+    //         temp = -1;
+    //     }
+    //     else
+    //     {
+    //         temp = 0;
+    //     }
+    //     yValue = 0;
+    //     xValue = 0;
+    //     *itZ = sum;
+    //     itZ++;
+    // }
+
+    // while (itX != first.rend() || itY != second.rend())
+    // {
+    //     if (itX != first.rend())
+    //     {
+    //         f = *itX;
+    //         itX++;
+    //     }
+    //     if (itY != second.rend())
+    //     {
+    //         s = *itY;
+    //         itY++;
+    //     }
+    //     if (f < s)
+    //     {
+    //         for (auto it = itX; it != first.rend(); it++)
+    //         {
+    //             if (*it == 0)
+    //             {
+    //                 *it = 9;
+    //             }
+    //             else
+    //             {
+    //                 *it -= 1;
+    //                 sum = f - s + 10;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         sum = f - s;
+    //     }
+    //     f = 0, s = 0;
+    //     cout << sum << " ";
+    // }
 
     // experiment with reverse iterator
     // vector<int> y = {1, 3, 9};
