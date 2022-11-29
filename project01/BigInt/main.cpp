@@ -113,7 +113,7 @@ TEST_CASE("addition")
         sout << x + y;
         REQUIRE(sout.str() == "111");
     }
-    SUBCASE("positive + negative, #5")
+    SUBCASE("positive + negative, #6")
     {
         BigInt x("123");
         BigInt y("-234");
@@ -175,6 +175,24 @@ TEST_CASE("subtraction")
         sout << x - y;
         REQUIRE(sout.str() == "646");
     }
+    SUBCASE("positive - negative, #7")
+    {
+        BigInt x("0");
+        BigInt y("4");
+        sout << x - y;
+        REQUIRE(sout.str() == "-4");
+    }
+}
+TEST_CASE("multiplication")
+{
+    ostringstream res;
+    SUBCASE("100*100")
+    {
+        BigInt x("100");
+        BigInt y("100");
+        res << x * y;
+        REQUIRE(res.str() == "10000");
+    }
 }
 TEST_CASE("comparisons")
 {
@@ -232,7 +250,7 @@ TEST_CASE("comparisons")
         REQUIRE(x3 != x4);
     }
 }
-TEST_CASE("input")
+TEST_CASE("input opearator")
 {
     istringstream i("10002002020");
     BigInt x;
@@ -240,4 +258,24 @@ TEST_CASE("input")
     ostringstream o;
     o << x;
     REQUIRE(o.str() == "10002002020");
+    BigInt x2 = 2;
+    REQUIRE(x2 == 2);
 }
+// TEST_CASE("+=")
+// {
+//     ostringstream o;
+//     BigInt x(20);
+//     BigInt y(123);
+//     x += y;
+
+//     REQUIRE(x == 143);
+// }
+// TEST_CASE("+=")
+// {
+//     ostringstream o;
+//     BigInt x(20);
+//     BigInt y(20);
+//     o << x * y;
+
+//     REQUIRE(o.str() == "400");
+// }
