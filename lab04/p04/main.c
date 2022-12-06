@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 void reverse(int *beg, int *end);
 void printArray(int *beg, int *end);
 int main(void)
@@ -21,7 +22,7 @@ int main(void)
     }
     for (int i = 0; i < n; i++)
     {
-        scanf("%d", dynamicArray + i);
+        scanf("%d", &dynamicArray[i]);
     }
     reverse(dynamicArray, dynamicArray + n);
     printArray(dynamicArray, dynamicArray + n);
