@@ -178,7 +178,6 @@ public:
             {
                 s.erase(s.begin());
             }
-            cout << s << endl;
             res = res + BigInt(s);
             count++;
             s = "";
@@ -224,7 +223,17 @@ inline std::ostream &operator<<(std::ostream &out, const BigInt &x)
 }
 inline BigInt operator*(const BigInt &x, const BigInt &y)
 {
-    return BigInt::multiplication(x, y);
+    if ((!x.mIsNegative && !y.mIsNegative) || (x.mIsNegative && y.mIsNegative))
+    {
+        return BigInt::multiplication(x, y);
+    }
+    else if ((x.mIsNegative && !y.mIsNegative) || (y.mIsNegative && !x.mIsNegative))
+    {
+        BigInt res = BigInt::multiplication(x, y);
+        res.mIsNegative = true;
+        return res;
+    }
+    throw std::runtime_error("invalid computation");
 }
 inline BigInt operator+=(BigInt &x, const BigInt &y)
 {

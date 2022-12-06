@@ -186,12 +186,26 @@ TEST_CASE("subtraction")
 TEST_CASE("multiplication")
 {
     ostringstream res;
-    SUBCASE("100*100")
+    SUBCASE("positive*positive")
     {
         BigInt x("100");
         BigInt y("100");
         res << x * y;
         REQUIRE(res.str() == "10000");
+    }
+    SUBCASE("negative * negative")
+    {
+        BigInt x("-999");
+        BigInt y("-999");
+        res << x * y;
+        REQUIRE(res.str() == "998001");
+    }
+    SUBCASE("negative * positive")
+    {
+        BigInt x("999");
+        BigInt y("-999");
+        res << x * y;
+        REQUIRE(res.str() == "-998001");
     }
 }
 TEST_CASE("comparisons")
