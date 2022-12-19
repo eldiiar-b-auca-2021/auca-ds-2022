@@ -12,31 +12,49 @@ int main()
     // experiment with iterators
 
     // experiment with usual iterator
-    BigInt y("2");
-    BigInt x("7");
-    int n = 1, temp = 0, sum = 1;
-    BigInt res(0);
-    string s;
+    // BigInt sum;
+    BigInt x;
 
-    BigInt count("1");
-    while (true)
+    for (int a, n; cin >> a >> n;)
     {
-        ostringstream oss;
-        res = count * y;
-        if (res == x)
+        int sum = 0;
+        for (int i = 1; i <= n; i++)
         {
-            break;
+            int power = a;
+            int collect = 0;
+            for (int j = 1; j < i; j++)
+            {
+                power = power * a;
+            }
+            int res = power * i;
+            sum += res;
+            cout << res << endl;
         }
-        else if (res > x)
-        {
-            sum -= 1;
-            break;
-        }
-        sum++;
-        count = count + BigInt(1);
-        res = 0;
+        cout << sum << endl;
     }
-    cout << sum << endl;
+
+    // BigInt res(0);
+    // string s;
+
+    // BigInt count("1");
+    // while (true)
+    // {
+    //     ostringstream oss;
+    //     res = count * y;
+    //     if (res == x)
+    //     {
+    //         break;
+    //     }
+    //     else if (res > x)
+    //     {
+    //         sum -= 1;
+    //         break;
+    //     }
+    //     sum++;
+    //     count = count + BigInt(1);
+    //     res = 0;
+    // }
+    // cout << sum << endl;
     // for (auto itY = y.mDigits.rbegin(); itY != y.mDigits.rend(); itY++)
     // {
     //     count++;
