@@ -30,7 +30,7 @@ void p01()
     reverse(v.data, v.data + n);
 
     printArray(v.data, v.data + n);
-
+    
     VecInt_destroy(&v);
 }
 
